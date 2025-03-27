@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2025-03-21T10:10:00Z</date>
+    <groups>
+        <group>
+            <name>Templates/Operating Systems</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template PC Lock Time Monitoring</template>
+            <name>Template PC Lock Time Monitoring</name>
+            <description>Template for monitoring PC lock time and duration</description>
+            <groups>
+                <group>
+                    <name>Templates/Operating Systems</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>PC Lock Time Monitoring</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>PC lock status</name>
+                    <key>system.lock.status</key>
+                    <delay>1m</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <description>Current PC lock status (0 = unlocked, 1 = locked)</description>
+                    <applications>
+                        <application>
+                            <name>PC Lock Time Monitoring</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>PC Lock Status</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>Last lock time</name>
+                    <key>system.lock.last_lock_time</key>
+                    <delay>1m</delay>
+                    <history>90d</history>
+                    <trends>0</trends>
+                    <value_type>4</value_type>
+                    <description>Time of the last PC lock event</description>
+                    <applications>
+                        <application>
+                            <name>PC Lock Time Monitoring</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Last unlock time</name>
+                    <key>system.lock.last_unlock_time</key>
+                    <delay>1m</delay>
+                    <history>90d</history>
+                    <trends>0</trends>
+                    <value_type>4</value_type>
+                    <description>Time of the last PC unlock event</description>
+                    <applications>
+                        <application>
+                            <name>PC Lock Time Monitoring</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Last lock duration</name>
+                    <key>system.lock.last_duration</key>
+                    <delay>1m</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <units>s</units>
+                    <description>Duration of the last PC lock in seconds</description>
+                    <applications>
+                        <application>
+                            <name>PC Lock Time Monitoring</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Total lock time</name>
+                    <key>system.lock.total_time</key>
+                    <delay>1m</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <units>s</units>
+                    <description>Total time PC has been locked in seconds</description>
+                    <applications>
+                        <application>
+                            <name>PC Lock Time Monitoring</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Daily lock time</name>
+                    <key>system.lock.daily_time</key>
+                    <delay>1m</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <units>s</units>
+                    <description>Total time PC has been locked today in seconds</description>
+                    <applications>
+                        <application>
+                            <name>PC Lock Time Monitoring</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+            <valuemaps>
+                <valuemap>
+                    <name>PC Lock Status</name>
+                    <mappings>
+                        <mapping>
+                            <value>0</value>
+                            <newvalue>Unlocked</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>1</value>
+                            <newvalue>Locked</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
+            </valuemaps>
+        </template>
+    </templates>
+    <triggers>
+        <trigger>
+            <expression>{Template PC Lock Time Monitoring:system.lock.status.last()}=1 and {Template PC Lock Time Monitoring:system.lock.last_duration.last()}&gt;600</expression>
+            <name>PC has been locked for more than 10 minutes</name>
+            <priority>INFO</priority>
+            <description>The PC has been locked for more than 10 minutes</description>
+        </trigger>
+        <trigger>
+            <expression>{Template PC Lock Time Monitoring:system.lock.status.last()}=1 and {Template PC Lock Time Monitoring:system.lock.last_duration.last()}&gt;3600</expression>
+            <name>PC has been locked for more than 1 hour</name>
+            <priority>WARNING</priority>
+            <description>The PC has been locked for more than 1 hour</description>
+        </trigger>
+        <trigger>
+            <expression>{Template PC Lock Time Monitoring:system.lock.daily_time.last()}&gt;14400</expression>
+            <name>PC has been locked for more than 4 hours today</name>
+            <priority>INFO</priority>
+            <description>The PC has been locked for more than 4 hours today</description>
+        </trigger>
+    </triggers>
+    <graphs>
+        <graph>
+            <name>PC Lock Time</name>
+            <graph_items>
+                <graph_item>
+                    <color>1A7C11</color>
+                    <item>
+                        <host>Template PC Lock Time Monitoring</host>
+                        <key>system.lock.daily_time</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <color>F63100</color>
+                    <item>
+                        <host>Template PC Lock Time Monitoring</host>
+                        <key>system.lock.last_duration</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>

@@ -1,0 +1,46 @@
+МОНИТОРИНГ ВРЕМЕНИ БЛОКИРОВКИ ПК ДЛЯ ZABBIX
+=======================================
+
+БЫСТРАЯ УСТАНОВКА:
+-----------------
+1. Запустите файл install.bat от имени администратора
+2. Следуйте инструкциям на экране
+
+РУЧНАЯ УСТАНОВКА:
+----------------
+1. Запустите PowerShell от имени администратора
+2. Выполните команду: .\install_lock_time_tracker.ps1
+3. Скопируйте файл userparameter_lock_time_tracker.conf в директорию конфигурации Zabbix Agent
+4. Перезапустите службу Zabbix Agent
+5. Импортируйте template_lock_time_monitor.xml в Zabbix Server
+
+ПРОВЕРКА РАБОТЫ:
+---------------
+1. Заблокируйте компьютер (Win+L)
+2. Подождите несколько секунд
+3. Разблокируйте компьютер
+4. Проверьте файлы в директории C:\ProgramData\PC_Lock_Monitor\
+
+ФАЙЛЫ ДАННЫХ:
+------------
+- C:\ProgramData\PC_Lock_Monitor\lock_status.txt - текущий статус (0 = разблокирован, 1 = заблокирован)
+- C:\ProgramData\PC_Lock_Monitor\last_lock_time.txt - время последней блокировки
+- C:\ProgramData\PC_Lock_Monitor\last_unlock_time.txt - время последней разблокировки
+- C:\ProgramData\PC_Lock_Monitor\last_lock_duration.txt - длительность последней блокировки в секундах
+- C:\ProgramData\PC_Lock_Monitor\total_lock_time.txt - общее время блокировки в секундах
+- C:\ProgramData\PC_Lock_Monitor\daily_lock_time.txt - ежедневное время блокировки в секундах
+- C:\ProgramData\PC_Lock_Monitor\lock_history.csv - история всех блокировок
+- C:\ProgramData\PC_Lock_Monitor\lock_time_tracker.log - журнал событий
+
+МЕТРИКИ ZABBIX:
+-------------
+- vfs.file.contents[C:\ProgramData\PC_Lock_Monitor\lock_status.txt] - текущий статус блокировки
+- vfs.file.contents[C:\ProgramData\PC_Lock_Monitor\last_lock_time.txt] - время последней блокировки
+- vfs.file.contents[C:\ProgramData\PC_Lock_Monitor\last_unlock_time.txt] - время последней разблокировки
+- vfs.file.contents[C:\ProgramData\PC_Lock_Monitor\last_lock_duration.txt] - длительность последней блокировки
+- vfs.file.contents[C:\ProgramData\PC_Lock_Monitor\total_lock_time.txt] - общее время блокировки
+- vfs.file.contents[C:\ProgramData\PC_Lock_Monitor\daily_lock_time.txt] - ежедневное время блокировки
+
+ПОДРОБНАЯ ДОКУМЕНТАЦИЯ:
+---------------------
+См. файл README_LOCK_TIME_MONITOR.md
